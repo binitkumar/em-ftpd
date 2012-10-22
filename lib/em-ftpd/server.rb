@@ -37,8 +37,18 @@ module EM::FTPD
     def post_init
       @mode   = :binary
       @name_prefix = "/"
-
+      start_tls({:private_key_file=>nil, :cert_chain_file=>nil, :verify_peer=>true})
       send_response "220 FTP server (em-ftpd) ready"
+    end
+	
+	def ssl_verify_peer(cert)
+      puts "Under verification 1.............................................."
+      true
+    end
+
+    def ssl_handshake_completed
+      puts "Under verification 2..............................................."
+      $server_handshake_completed = true
     end
 
     def receive_line(str)
